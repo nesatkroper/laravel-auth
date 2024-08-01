@@ -54,7 +54,7 @@ class EmployeeController extends Controller
             'status' => $request->status,
             'photo' => $imgPath,
         ]);
-        return redirect()->route('emp')->with('success', 'Employee added successfully');
+        return redirect()->route('emp.index')->with('success', 'Employee added successfully');
     }
 
     /**
@@ -81,6 +81,10 @@ class EmployeeController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        // $request->validate([
+        //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // ]);
+
         $emp = Employee::findOrFail($id);
 
         if ($emp->photo)

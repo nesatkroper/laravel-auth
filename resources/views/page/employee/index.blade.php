@@ -35,7 +35,7 @@
                                 <tbody>
                                     @foreach ($emp as $e)
                                     <tr class="align-middle text-center">
-                                        <td>{{ $e->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         @if ($e->photo)
                                         <td>
                                             <img

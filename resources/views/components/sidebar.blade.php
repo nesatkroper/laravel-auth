@@ -18,7 +18,7 @@
                 data-accordion="false"
             >
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-speedometer"></i>
                         <p>
                             Dashboard
@@ -26,8 +26,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item active">
+                            <a href="{{ url('pro') }}" class="nav-link">
+                                <i class="nav-icon fa fa-briefcase"></i>
+                                <p>Product</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
-                            <a href="{{ url('emp') }}" class="nav-link active">
+                            <a href="{{ url('emp') }}" class="nav-link">
                                 <i class="nav-icon fa fa-user"></i>
                                 <p>Employee</p>
                             </a>

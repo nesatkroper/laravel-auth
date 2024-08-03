@@ -1,5 +1,14 @@
 <x-layout>
-    <div class="custom-modal">
+    <div
+        class="custom-modal d-none center-block"
+        style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -30%);
+            transition: all 5s;
+        "
+    >
         <div class="container-fluid" style="width: 1000px">
             <div class="app-content m-5">
                 <div class="card card-info card-outline mb-4">
@@ -105,10 +114,7 @@
                             <button class="btn btn-info" type="submit">
                                 Submit form
                             </button>
-                            <a
-                                href="{{ route('pro.index') }}"
-                                class="btn btn-danger"
-                            >
+                            <a id="btn-pro-close" class="btn btn-danger">
                                 Back to Employee Page
                             </a>
                         </div>

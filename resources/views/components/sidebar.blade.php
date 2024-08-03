@@ -27,6 +27,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item active">
+                            <a href="{{ url('sale') }}" class="nav-link">
+                                <i class="nav-icon fa fa-cart-plus"></i>
+                                <p>POS</p>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
                             <a href="{{ url('pro') }}" class="nav-link">
                                 <i class="nav-icon fa fa-briefcase"></i>
                                 <p>Product</p>
@@ -54,5 +60,6 @@
                 </li>
             </ul>
         </nav>
+        <p>12:12</p>
     </div>
 </aside>

@@ -6,44 +6,28 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\app\Product;
 use App\Models\app\Category;
-use App\Models\app\ProDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-        $pro = Product::leftJoin('categories', 'products.category', '=', 'categories.id')->select('products.*', 'categories.name as cate')->get();
-
-        // $pro=Product::query()->select('products.*', 'categories.name as cate','pro_details.add as add', 'pro_details.sale as sale')->
-
-        $cate = Category::all();
-
-
+        $pro = DB::select('SELECT p.id, p.name, p.photo, p.category, p.price, c.name AS cate, (SUM(pd.add) - SUM(pd.sale)) AS qty FROM products p LEFT JOIN categories c ON p.category = c.id LEFT JOIN pro_details pd ON p.id = pd.pro_id WHERE p.isDelete < 1 GROUP BY p.id, p.name, p.photo, p.category, p.price, c.name');
 
         return view('page/product/index', [
             'pro' => $pro,
+        ]);
+    }
+
+    public function create()
+    {
+        $cate = Category::all();
+        return view('page/product/create', [
             'cate' => $cate,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-        return view('page/product/create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //upload the image
@@ -62,30 +46,23 @@ class ProductController extends Controller
             'price' => $request->price,
         ]);
 
-        return redirect()->route('pro.index')->with('success', 'Product created successfully');
+        return redirect()->route('pro.index');
+        // return view('page/product/index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
         $pro = Product::find($id);
-        return view('page/product/edit')->with('pro', $pro);
+
+        return view('page/product/edit');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
@@ -108,17 +85,40 @@ class ProductController extends Controller
             'price' => $request->price
         ]);
 
-        return redirect()->route('pro.index')->with('success', 'Product updated successfully');
+        return redirect()->route('pro.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function softDelete(Request $request, string $id)
+    {
+        $pro = Product::find($id);
+        $pro = DB::update(
+            'UPDATE products p SET p.isDelete = ? WHERE p.id = ?',
+            [
+                1,
+                $id
+            ]
+        );
+
+        return redirect()->route('pro.index');
+    }
+
+    public function addProduct(Request $req, string $id)
+    {
+        $pro = Product::find($id);
+        $pro = DB::insert('INSERT INTO pro_details p (p.pro_id, p.add, p.add_price) VALUES (?, ?, ?)', [
+            $id,
+            $req->add,
+            $req->aprice,
+        ]);
+
+        return redirect()->route('pro.index');
+    }
+
     public function destroy(string $id)
     {
         //
         $pro = Product::find($id);
         $pro->delete();
-        return redirect()->route('pro.index')->with('success', 'Product deleted successfully');
+        return redirect()->route('pro.index');
     }
 }
